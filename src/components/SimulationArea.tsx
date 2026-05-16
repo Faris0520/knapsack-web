@@ -50,7 +50,7 @@ function StepMulai({ capacity }: { capacity: number }) {
       <div className="flex-1 rounded-xl border border-border/50 bg-gray-50/50 p-5 flex items-center gap-4">
         <div className="flex flex-col items-center">
           <p className="text-xs font-medium text-muted mb-2">Tas Saat Ini</p>
-          <Image src="/items/tas.png" alt="Tas" width={120} height={120} />
+          <Image src="/items/tas.png" alt="Tas" width={140} height={140} />
         </div>
         <div className="flex-1 space-y-3">
           <div>
@@ -101,7 +101,7 @@ function StepEvaluasi({ item, capacity, usedWeight, usedValue }: { item?: Item; 
       <div className="flex-1 rounded-xl border border-border/50 bg-gray-50/50 p-5 flex items-center gap-4">
         <div className="flex flex-col items-center">
           <p className="text-xs font-medium text-muted mb-2">Tas Saat Ini</p>
-          <Image src="/items/tas.png" alt="Tas" width={120} height={120 } />
+          <Image src="/items/tas.png" alt="Tas" width={140} height={140} />
         </div>
         <div className="flex-1 space-y-3">
           <div>
@@ -151,7 +151,7 @@ function StepHasil({ capacity, usedWeight, usedValue, result }: { capacity: numb
       <div className="flex-1 rounded-xl border border-border/50 bg-gray-50/50 p-5 flex items-center gap-4">
         <div className="flex flex-col items-center">
           <p className="text-xs font-medium text-muted mb-2">Tas Saat Ini</p>
-          <Image src="/items/tas.png" alt="Tas" width={120} height={120} />
+          <Image src="/items/tas.png" alt="Tas" width={140} height={140} />
         </div>
         <div className="flex-1 space-y-3">
           <div>

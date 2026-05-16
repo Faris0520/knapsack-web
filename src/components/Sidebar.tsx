@@ -105,7 +105,7 @@ export function Sidebar({
   return (
     <aside className="w-[340px] shrink-0 flex flex-col gap-4 overflow-y-auto max-h-screen p-4">
       <div className="flex items-center gap-2 mb-2">
-        <Image src="/items/tas.png" alt="Tas" width={24} height={24} />
+        <Image src="/items/tas.png" alt="Tas" width={40} height={40} />
         <div>
           <h1 className="text-lg font-bold leading-tight">Knapsack Optimizer</h1>
           <p className="text-xs text-muted">Dashboard Interaktif</p>
