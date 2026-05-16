@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const googleSans = localFont({
+  src: [
+    { path: "../../public/fonts/GoogleSans-Regular.woff2", weight: "400", style: "normal" },
+    { path: "../../public/fonts/GoogleSans-Italic.woff2", weight: "400", style: "italic" },
+    { path: "../../public/fonts/GoogleSans-Medium.woff2", weight: "500", style: "normal" },
+    { path: "../../public/fonts/GoogleSans-MediumItalic.woff2", weight: "500", style: "italic" },
+    { path: "../../public/fonts/GoogleSans-Bold.woff2", weight: "700", style: "normal" },
+  ],
+  variable: "--font-google-sans",
 });
 
 export const metadata: Metadata = {
@@ -23,10 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="id"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
+    <html lang="id" className={`${googleSans.variable} h-full antialiased`}>
       <body className="h-full">{children}</body>
     </html>
   );
