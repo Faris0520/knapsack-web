@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Knapsack 0/1 Optimizer — Frontend
 
-## Getting Started
+Dashboard interaktif untuk memvisualisasikan algoritma Dynamic Programming pada permasalahan Knapsack 0/1.
 
-First, run the development server:
+## Tech Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Next.js 16** (Turbopack)
+- **React 19**
+- **TypeScript 5**
+- **Tailwind CSS 4**
+- **Lucide React** (ikon)
+
+## Fitur
+
+- Input barang dengan preset (Laptop, Buku, Charger, dll) atau custom
+- Inline editing dan hapus barang
+- Tombol random untuk menambah barang acak
+- Visualisasi step-by-step algoritma DP (auto play / manual next)
+- Stepper horizontal: Mulai → Evaluasi Barang → Hasil Optimal
+- Simulasi langkah dengan progress kapasitas tas secara real-time
+- Matriks DP dengan highlight sel aktif dan path optimal
+- Panel barang terpilih setelah proses selesai
+
+## Struktur Folder
+
+```
+src/
+├── app/
+│   ├── layout.tsx
+│   ├── page.tsx
+│   └── globals.css
+├── components/
+│   ├── ui/
+│   │   ├── Button.tsx
+│   │   ├── Card.tsx
+│   │   ├── Input.tsx
+│   │   └── Select.tsx
+│   ├── Sidebar.tsx
+│   ├── Stepper.tsx
+│   ├── SimulationArea.tsx
+│   ├── DPTable.tsx
+│   ├── SelectedPanel.tsx
+│   └── ItemIcon.tsx
+├── lib/
+│   ├── api.ts
+│   └── utils.ts
+├── types/
+│   └── index.ts
+public/
+└── items/
+    ├── tas.png
+    ├── laptop.png
+    ├── buku.png
+    ├── charger.png
+    ├── botol-minum.png
+    ├── kotak-pensil.png
+    ├── powerbank.png
+    └── jaket.png
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Buka `http://localhost:3000`.
 
-## Learn More
+## Koneksi Backend
 
-To learn more about Next.js, take a look at the following resources:
+Frontend mengirim request ke backend di `http://localhost:8000` (default). Ubah via environment variable:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Endpoint yang digunakan: `POST /solve` dengan body:
 
-## Deploy on Vercel
+```json
+{
+  "capacity": 7,
+  "items": [
+    { "name": "Laptop", "weight": 3, "value": 10 },
+    { "name": "Buku", "weight": 2, "value": 8 }
+  ]
+}
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Gambar Barang
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Letakkan file gambar di `public/items/` dengan format nama `nama-barang.png`. Mapping nama ke file ada di `src/components/ItemIcon.tsx`.
