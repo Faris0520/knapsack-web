@@ -1,5 +1,7 @@
 # Knapsack 0/1 Optimizer - Frontend
 
+https://k.parriz.in
+
 Dashboard interaktif untuk memvisualisasikan algoritma Dynamic Programming pada permasalahan Knapsack 0/1.
 
 ## Tech Stack
