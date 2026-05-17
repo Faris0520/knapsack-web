@@ -1,4 +1,4 @@
-# Knapsack 0/1 Optimizer — Frontend
+# Knapsack 0/1 Optimizer - Frontend
 
 Dashboard interaktif untuk memvisualisasikan algoritma Dynamic Programming pada permasalahan Knapsack 0/1.
 
