@@ -10,7 +10,11 @@
       "Bash(Remove-Item \"D:\\\\Koding\\\\knapsack\\\\frontend\\\\src\\\\components\\\\ui\\\\table.tsx\" -Force)",
       "Bash(Remove-Item \"D:\\\\Koding\\\\knapsack\\\\frontend\\\\src\\\\components\\\\ItemForm.tsx\" -Force)",
       "Bash(Remove-Item \"D:\\\\Koding\\\\knapsack\\\\frontend\\\\src\\\\components\\\\ItemList.tsx\" -Force)",
-      "Bash(Remove-Item \"D:\\\\Koding\\\\knapsack\\\\frontend\\\\src\\\\components\\\\KnapsackVisual.tsx\" -Force)"
+      "Bash(Remove-Item \"D:\\\\Koding\\\\knapsack\\\\frontend\\\\src\\\\components\\\\KnapsackVisual.tsx\" -Force)",
+      "Bash(Get-ChildItem -Path \"D:\\\\Koding\\\\knapsack\" -Recurse -Force)",
+      "Bash(Select-Object FullName)",
+      "Bash(ConvertTo-Csv -NoTypeInformation)",
+      "Bash(measure-object -line)"
     ]
   }
 }
