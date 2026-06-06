@@ -2,7 +2,7 @@
 backend/
 docs/
 /frontend/
-/.claude/
+.claude/
 # dependencies
 /node_modules
 /.pnp

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Knapsack Optimizer</title>
+  <meta name="description" content="Dashboard interaktif untuk visualisasi algoritma Knapsack 0/1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar (kiri) -->
+    <aside class="sidebar">
+      <div class="brand">
+        <img src="items/tas.png" alt="Tas" width="40" height="40" />
+        <div>
+          <h1>Knapsack Optimizer</h1>
+          <p class="muted xs">Dashboard Interaktif</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <label class="xs muted medium">Maksimum berat (kg)</label>
+        <div class="input-wrap">
+          <input id="capacity" class="input" type="number" min="1" placeholder="10" value="10" />
+          <span class="input-suffix">kg</span>
+        </div>
+      </div>
+
+      <div class="card stack">
+        <h3 class="sm semibold">Kelola Barang</h3>
+        <select id="preset" class="input"></select>
+
+        <div id="presetInfo" class="row gap-4 xs muted"></div>
+
+        <div id="customFields" class="stack-sm hidden">
+          <input id="customName" class="input" placeholder="Nama barang" />
+          <div class="input-wrap">
+            <input id="customWeight" class="input" type="number" placeholder="Berat" />
+            <span class="input-suffix">kg</span>
+          </div>
+          <div class="input-wrap">
+            <input id="customValue" class="input" type="number" placeholder="Nilai" />
+            <span class="input-suffix">poin</span>
+          </div>
+        </div>
+
+        <div class="row gap-2">
+          <button id="addBtn" class="btn btn-primary flex-1 gap-1"></button>
+          <button id="randomBtn" class="btn btn-outline gap-1"></button>
+        </div>
+      </div>
+
+      <div id="itemsCard" class="card p-0 hidden">
+        <div class="table-scroll">
+          <table class="items-table">
+            <thead>
+              <tr>
+                <th class="w-6"></th>
+                <th class="left">Nama</th>
+                <th class="center">Berat</th>
+                <th class="center">Nilai</th>
+                <th class="center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="itemsBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat">
+          <span class="stat-icon" data-icon="package"></span>
+          <span id="statCount" class="stat-num">0</span>
+          <span class="stat-label">Barang</span>
+        </div>
+        <div class="stat">
+          <span class="stat-icon" data-icon="weight"></span>
+          <span id="statWeight" class="stat-num">0</span>
+          <span class="stat-label">kg Total</span>
+        </div>
+        <div class="stat">
+          <span class="stat-icon" data-icon="star"></span>
+          <span id="statValue" class="stat-num">0</span>
+          <span class="stat-label">Poin Total</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main (tengah) -->
+    <main class="main">
+      <div class="card p-5">
+        <div id="stepper" class="stepper"></div>
+      </div>
+
+      <div class="card p-5">
+        <div id="simulation"></div>
+      </div>
+
+      <div class="row gap-2">
+        <div id="controls"></div>
+      </div>
+
+      <p id="error" class="error sm hidden"></p>
+
+      <div id="dpCard" class="card p-5 hidden">
+        <h3 class="sm semibold mb-3">Matriks DP</h3>
+        <div id="dpTable"></div>
+      </div>
+    </main>
+
+    <!-- Selected panel (kanan) -->
+    <aside class="selected-panel">
+      <div class="row gap-2 mb-2">
+        <span class="icon-success" data-icon="check-circle"></span>
+        <h2 class="base bold">Barang Terpilih</h2>
+      </div>
+      <div id="selectedContent"></div>
+    </aside>
+  </div>
+
+  <!-- Algoritma knapsack (terpisah, mudah dibaca) lalu logika tampilan -->
+  <script src="knapsack.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

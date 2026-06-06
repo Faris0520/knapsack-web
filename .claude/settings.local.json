@@ -14,7 +14,8 @@
       "Bash(Get-ChildItem -Path \"D:\\\\Koding\\\\knapsack\" -Recurse -Force)",
       "Bash(Select-Object FullName)",
       "Bash(ConvertTo-Csv -NoTypeInformation)",
-      "Bash(measure-object -line)"
+      "Bash(measure-object -line)",
+      "Bash(node --check app.js)"
     ]
   }
 }
