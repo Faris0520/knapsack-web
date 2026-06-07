@@ -83,7 +83,6 @@ D:\Koding\knapsack/
 ├── index.html          # Struktur halaman (sidebar | area simulasi | panel)
 ├── app.js              # Logika UI: state, render, panggil /solve via fetch
 ├── style.css           # Styling, tema (CSS variables), animasi
-├── knapsack.js         # (referensi versi lama; TIDAK dimuat lagi)
 │
 ├── fonts/              # Google Sans (woff2): Regular, Medium, Bold, Italic
 │   ├── GoogleSans-Regular.woff2
@@ -102,11 +101,6 @@ D:\Koding\knapsack/
     ├── powerbank.png
     └── jaket.png
 ```
-
-> **Catatan tentang `knapsack.js`:** pada versi sebelumnya, algoritma dihitung
-> langsung di browser memakai file ini. Sekarang algoritma sudah dipindah ke
-> server (`knapsack.py`), dan `index.html` **tidak lagi memuat** `knapsack.js`.
-> File-nya disisakan hanya sebagai bahan referensi/perbandingan.
 
 ---
 

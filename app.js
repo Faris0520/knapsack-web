@@ -1,10 +1,4 @@
-// ============================================================
-// Knapsack Optimizer - frontend vanilla HTML/CSS/JS
-// Algoritma dijalankan di server Flask (lihat app.py & knapsack.py),
-// dipanggil dari sini lewat fetch('/solve').
-// ============================================================
-
-// ---------- Ikon (inline SVG, gaya lucide) ----------
+// ---------- Ikon lucide ----------
 const ICONS = {
   package: '<path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/>',
   weight: '<circle cx="12" cy="5" r="3"/><path d="M6.5 8a2 2 0 0 0-1.905 1.46L2.1 18.5A2 2 0 0 0 4 21h16a2 2 0 0 0 1.925-2.54L19.4 9.5A2 2 0 0 0 17.48 8Z"/>',
@@ -64,11 +58,6 @@ function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
 
-// ---------- Algoritma ----------
-// Algoritma knapsack TIDAK lagi dihitung di browser. Logikanya ada
-// di server Python (knapsack.py) dan dipanggil oleh handleStart()
-// lewat fetch('/solve'). File ini (app.js) hanya mengurus tampilan.
-
 // ---------- State ----------
 const state = {
   items: [],
@@ -95,9 +84,7 @@ const state = {
 // ---------- Element refs ----------
 const $ = (id) => document.getElementById(id);
 
-// ============================================================
 // Sidebar
-// ============================================================
 function initSidebar() {
   // preset options
   $("preset").innerHTML = PRESETS.map((p) => `<option value="${p.value}">${p.label}</option>`).join("");
@@ -255,9 +242,7 @@ function renderItems() {
   });
 }
 
-// ============================================================
 // Proses / kontrol langkah
-// ============================================================
 async function handleStart() {
   if (state.items.length === 0 || state.capacity <= 0) return;
   state.error = "";
@@ -324,9 +309,7 @@ function handleDPStepChange(step, totalSteps) {
   }
 }
 
-// ============================================================
 // Render bagian tengah + kanan
-// ============================================================
 function renderMain() {
   renderStepper();
   renderSimulation();
@@ -510,9 +493,7 @@ function renderError() {
   el.textContent = state.error;
 }
 
-// ============================================================
 // Matriks DP
-// ============================================================
 function renderDP() {
   const card = $("dpCard");
   if (!state.result) {
@@ -665,9 +646,7 @@ function dpReset() {
   setDpStep(0);
 }
 
-// ============================================================
 // Panel kanan (Barang Terpilih)
-// ============================================================
 function renderSelectedPanel() {
   const { result, capacity, currentStep } = state;
   const isComplete = currentStep === 2;
@@ -700,9 +679,7 @@ function renderSelectedPanel() {
     </div>`;
 }
 
-// ============================================================
 // Init
-// ============================================================
 initSidebar();
 renderItems();
 renderMain();

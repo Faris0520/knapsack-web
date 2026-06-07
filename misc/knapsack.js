@@ -2,10 +2,6 @@
 //  ALGORITMA KNAPSACK 0/1 (Dynamic Programming)
 // ============================================================
 //
-//  File ini HANYA berisi algoritmanya, terpisah dari kode
-//  tampilan/proses (lihat app.js). Tujuannya supaya logika inti
-//  mudah dibaca dan dipelajari.
-//
 //  Masalah: punya tas berkapasitas `capacity` kg. Ada beberapa
 //  barang, masing-masing punya berat & nilai. Pilih kombinasi
 //  barang (tiap barang hanya boleh dipakai 0 atau 1 kali) agar

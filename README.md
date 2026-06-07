@@ -47,9 +47,6 @@ knapsack/
     └── jaket.png
 ```
 
-> Catatan: `knapsack.js` masih ada sebagai referensi versi lama (algoritma di
-> browser), tetapi **tidak lagi dimuat** - algoritma kini di `knapsack.py`.
-
 ## Cara Menjalankan
 
 ```bash
