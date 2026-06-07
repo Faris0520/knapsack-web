@@ -256,16 +256,28 @@ function renderItems() {
 // ============================================================
 // Proses / kontrol langkah
 // ============================================================
-function handleStart() {
+async function handleStart() {
   if (state.items.length === 0 || state.capacity <= 0) return;
   state.error = "";
   state.currentStep = 1;
   state.dpStep = 0;
-  // Hitung langsung di browser (sinkron, tanpa server)
-  state.result = solveKnapsack(
-    state.capacity,
-    state.items.map(({ name, weight, value }) => ({ name, weight, value }))
-  );
+  // Hitung di server Python (Flask) lewat endpoint /solve.
+  try {
+    const res = await fetch("/solve", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        capacity: state.capacity,
+        items: state.items.map(({ name, weight, value }) => ({ name, weight, value })),
+      }),
+    });
+    if (!res.ok) throw new Error("Server membalas status " + res.status);
+    state.result = await res.json();
+  } catch (err) {
+    state.error = "Gagal menghubungi server: " + err.message;
+    renderMain();
+    return;
+  }
   // posisi awal evaluasi
   handleDPStepChange(0, state.items.length * (state.capacity + 1));
   renderMain();

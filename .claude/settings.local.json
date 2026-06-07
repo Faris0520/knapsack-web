@@ -15,7 +15,8 @@
       "Bash(Select-Object FullName)",
       "Bash(ConvertTo-Csv -NoTypeInformation)",
       "Bash(measure-object -line)",
-      "Bash(node --check app.js)"
+      "Bash(node --check app.js)",
+      "Bash(python *)"
     ]
   }
 }
