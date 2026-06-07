@@ -1,5 +1,7 @@
 // ============================================================
-// Knapsack Optimizer - versi vanilla HTML/CSS/JS (tanpa backend)
+// Knapsack Optimizer - frontend vanilla HTML/CSS/JS
+// Algoritma dijalankan di server Flask (lihat app.py & knapsack.py),
+// dipanggil dari sini lewat fetch('/solve').
 // ============================================================
 
 // ---------- Ikon (inline SVG, gaya lucide) ----------
@@ -63,9 +65,9 @@ function escapeHtml(s) {
 }
 
 // ---------- Algoritma ----------
-// Fungsi `solveKnapsack(capacity, items)` didefinisikan di file
-// terpisah: knapsack.js (dimuat lebih dulu di index.html).
-// File ini (app.js) hanya mengurus tampilan/proses & memanggilnya.
+// Algoritma knapsack TIDAK lagi dihitung di browser. Logikanya ada
+// di server Python (knapsack.py) dan dipanggil oleh handleStart()
+// lewat fetch('/solve'). File ini (app.js) hanya mengurus tampilan.
 
 // ---------- State ----------
 const state = {

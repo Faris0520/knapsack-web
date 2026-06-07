@@ -1,16 +1,13 @@
-# Knapsack 0/1 Optimizer - Frontend
+# Knapsack 0/1 Optimizer
 
-https://k.parriz.in
-
-Dashboard interaktif untuk memvisualisasikan algoritma Dynamic Programming pada permasalahan Knapsack 0/1.
+Dashboard interaktif untuk memvisualisasikan algoritma **Dynamic Programming** pada permasalahan **0/1 Knapsack**. Tampilan dibuat dengan **HTML/CSS/JavaScript polos** (tanpa framework), sedangkan algoritmanya berjalan di server **Flask (Python)**.
 
 ## Tech Stack
 
-- **Next.js 16** (Turbopack)
-- **React 19**
-- **TypeScript 5**
-- **Tailwind CSS 4**
-- **Lucide React** (ikon)
+- **HTML5 / CSS3 / JavaScript (vanilla)** — antarmuka, tanpa build step
+- **Flask (Python)** — menyajikan halaman + endpoint `POST /solve`
+- **Algoritma Dynamic Programming** — 0/1 Knapsack di `knapsack.py`
+- **Google Sans** (font lokal) + ikon SVG inline gaya Lucide
 
 ## Fitur
 
@@ -26,30 +23,15 @@ Dashboard interaktif untuk memvisualisasikan algoritma Dynamic Programming pada 
 ## Struktur Folder
 
 ```
-src/
-├── app/
-│   ├── layout.tsx
-│   ├── page.tsx
-│   └── globals.css
-├── components/
-│   ├── ui/
-│   │   ├── Button.tsx
-│   │   ├── Card.tsx
-│   │   ├── Input.tsx
-│   │   └── Select.tsx
-│   ├── Sidebar.tsx
-│   ├── Stepper.tsx
-│   ├── SimulationArea.tsx
-│   ├── DPTable.tsx
-│   ├── SelectedPanel.tsx
-│   └── ItemIcon.tsx
-├── lib/
-│   ├── api.ts
-│   └── utils.ts
-├── types/
-│   └── index.ts
-public/
-└── items/
+knapsack/
+├── app.py              # Server Flask: sajikan file statis + endpoint /solve
+├── knapsack.py         # Algoritma 0/1 Knapsack (Dynamic Programming)
+├── requirements.txt    # Dependensi Python (flask)
+├── index.html          # Struktur halaman (sidebar | simulasi | panel)
+├── app.js              # Logika UI: state, render, panggil /solve via fetch
+├── style.css           # Styling + animasi
+├── fonts/              # Google Sans (woff2)
+└── items/              # Gambar ikon barang (PNG)
     ├── tas.png
     ├── laptop.png
     ├── buku.png
@@ -60,24 +42,24 @@ public/
     └── jaket.png
 ```
 
-## Setup
+> Catatan: `knapsack.js` masih ada sebagai referensi versi lama (algoritma di
+> browser), tetapi **tidak lagi dimuat** — algoritma kini di `knapsack.py`.
+
+## Cara Menjalankan
 
 ```bash
-npm install
-npm run dev
+pip install -r requirements.txt
+python app.py
 ```
 
-Buka `http://localhost:3000`.
+Lalu buka **http://127.0.0.1:5000** — satu perintah, satu URL. Flask menyajikan
+file statis sekaligus melayani API, jadi tidak perlu server terpisah.
 
-## Koneksi Backend
+## API
 
-Frontend mengirim request ke backend di `http://localhost:8000` (default). Ubah via environment variable:
+Satu-satunya endpoint: `POST /solve`
 
-```
-NEXT_PUBLIC_API_URL=http://localhost:8000
-```
-
-Endpoint yang digunakan: `POST /solve` dengan body:
+Request:
 
 ```json
 {
@@ -89,6 +71,21 @@ Endpoint yang digunakan: `POST /solve` dengan body:
 }
 ```
 
+Response:
+
+```json
+{
+  "dp_table": [[0, 0, ...], ...],
+  "selected_items": [{ "name": "Laptop", "weight": 3, "value": 10 }],
+  "total_weight": 3,
+  "total_value": 10
+}
+```
+
+`app.js` memanggil endpoint ini lewat `fetch('/solve')` di fungsi `handleStart()`,
+lalu memakai `dp_table` & `selected_items` untuk animasi langkah demi langkah.
+
 ## Gambar Barang
 
-Letakkan file gambar di `public/items/` dengan format nama `nama-barang.png`. Mapping nama ke file ada di `src/components/ItemIcon.tsx`.
+Letakkan file gambar di `items/` dengan format nama `nama-barang.png`. Mapping nama
+ke file ada di konstanta `IMAGE_MAP` pada `app.js`.

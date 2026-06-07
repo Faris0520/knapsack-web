@@ -7,19 +7,22 @@
 3. [Tech Stack](#3-tech-stack)
 4. [Struktur Folder](#4-struktur-folder)
 5. [Alur Kerja Aplikasi](#5-alur-kerja-aplikasi)
-6. [Komponen Frontend](#6-komponen-frontend)
+6. [Frontend (HTML/CSS/JS)](#6-frontend-htmlcssjs)
 7. [Backend & Algoritma](#7-backend--algoritma)
-8. [Tipe Data & Interface](#8-tipe-data--interface)
-9. [Integrasi API](#9-integrasi-api)
+8. [Format Data (Request & Response)](#8-format-data-request--response)
+9. [Integrasi Frontend ↔ Backend](#9-integrasi-frontend--backend)
 10. [Tampilan & Styling](#10-tampilan--styling)
-11. [Konfigurasi Project](#11-konfigurasi-project)
-12. [Aset Publik](#12-aset-publik)
+11. [Cara Menjalankan](#11-cara-menjalankan)
+12. [Aset](#12-aset)
+13. [Ringkasan Singkat](#13-ringkasan-singkat)
 
 ---
 
 ## 1. Gambaran Umum
 
 **Knapsack Optimizer** adalah aplikasi web interaktif yang memvisualisasikan dan menyelesaikan masalah klasik **0/1 Knapsack Problem** menggunakan teknik **Dynamic Programming (DP)**. Aplikasi ini bersifat edukatif — pengguna dapat menambahkan barang-barang dengan berat dan nilai tertentu, lalu menyaksikan bagaimana algoritma bekerja secara langkah demi langkah (step-by-step) untuk menemukan kombinasi barang yang paling optimal agar muat dalam tas dengan kapasitas terbatas dan menghasilkan total nilai tertinggi.
+
+Versi ini dibuat **polos**: antarmuka memakai **HTML, CSS, dan JavaScript murni** (tanpa framework seperti React/Next.js), sedangkan **algoritma dijalankan di server Python (Flask)**. Satu server Flask menyajikan halaman web sekaligus melayani perhitungan, jadi cukup satu perintah untuk menjalankannya.
 
 Bahasa antarmuka yang digunakan adalah **Bahasa Indonesia**, cocok untuk keperluan edukasi di lingkungan akademik Indonesia.
 
@@ -37,37 +40,34 @@ Bahasa antarmuka yang digunakan adalah **Bahasa Indonesia**, cocok untuk keperlu
 
 - Visualisasi **tabel DP** secara interaktif (per sel, berwarna)
 - **Step-by-step simulation** dengan kontrol manual dan auto-play
-- Manajemen barang: tambah, edit, hapus, randomisasi
-- 8 **preset barang** siap pakai (Laptop, Buku, Charger, dll.)
+- Manajemen barang: tambah, edit (inline), hapus, randomisasi
+- 7 **preset barang** siap pakai (Laptop, Buku, Charger, dll.) + opsi Custom
 - Tampilan hasil: barang terpilih, total berat, total nilai
 - Antarmuka 3 tahap (wizard) yang mudah dipahami
+- Animasi mulus (capacity bar, reveal sel DP) dengan dukungan `prefers-reduced-motion`
 
 ---
 
 ## 3. Tech Stack
 
-### Frontend
+### Frontend (tanpa framework)
 
-| Teknologi | Versi | Fungsi |
-|---|---|---|
-| Next.js | 16.2.6 | Framework React dengan SSR/SSG |
-| React | 19.2.4 | Library UI utama |
-| TypeScript | 5 | Type safety dan DX |
-| Tailwind CSS | 4 | Utility-first styling |
-| Lucide React | ^1.16.0 | Ikon SVG |
+| Teknologi | Fungsi |
+|---|---|
+| HTML5 | Struktur halaman (`index.html`) |
+| CSS3 | Styling, tema, animasi (`style.css`) |
+| JavaScript (vanilla) | Logika UI & state (`app.js`) — tanpa build step |
+| Ikon SVG inline | Gaya Lucide, didefinisikan langsung di `app.js` |
+| Google Sans | Font di-host lokal di `fonts/` |
 
 ### Backend
 
 | Teknologi | Fungsi |
 |---|---|
-| FastAPI (Python) | REST API server |
-| Pydantic | Validasi request/response |
-| CORS Middleware | Izinkan akses dari frontend |
+| Flask (Python) | Menyajikan file statis **dan** endpoint `POST /solve` |
+| `knapsack.py` | Implementasi algoritma 0/1 Knapsack (DP) |
 
-### Deployment
-
-- Backend di-deploy di **Vercel**: `https://knapsack-web-wix4.vercel.app`
-- Frontend menggunakan **Next.js App Router**
+Tidak ada build tool, bundler, atau dependensi Node.js. Satu-satunya dependensi adalah **Flask** (lihat `requirements.txt`).
 
 ---
 
@@ -76,59 +76,37 @@ Bahasa antarmuka yang digunakan adalah **Bahasa Indonesia**, cocok untuk keperlu
 ```
 D:\Koding\knapsack/
 │
-├── src/                          # Source code frontend
-│   ├── app/
-│   │   ├── layout.tsx            # Root layout (font, metadata)
-│   │   ├── page.tsx              # Halaman utama (entry point)
-│   │   └── globals.css           # Global styles & CSS variables
-│   │
-│   ├── components/
-│   │   ├── ui/                   # Komponen UI dasar (reusable)
-│   │   │   ├── button.tsx        # Tombol dengan varian
-│   │   │   ├── card.tsx          # Wrapper kartu
-│   │   │   ├── input.tsx         # Input field dengan suffix opsional
-│   │   │   └── Select.tsx        # Dropdown select
-│   │   │
-│   │   ├── Sidebar.tsx           # Panel kiri: manajemen barang
-│   │   ├── Stepper.tsx           # Indikator langkah (3 step)
-│   │   ├── SimulationArea.tsx    # Area visualisasi utama
-│   │   ├── DPTable.tsx           # Tabel Dynamic Programming interaktif
-│   │   ├── SelectedPanel.tsx     # Panel kanan: hasil barang terpilih
-│   │   └── ItemIcon.tsx          # Render ikon/gambar barang
-│   │
-│   ├── lib/
-│   │   ├── api.ts                # Fungsi pemanggil API backend
-│   │   └── utils.ts              # Utilitas (fungsi `cn`)
-│   │
-│   └── types/
-│       └── index.ts              # Interface & type definitions
+├── app.py              # Server Flask: sajikan file statis + endpoint /solve
+├── knapsack.py         # Algoritma 0/1 Knapsack (Dynamic Programming)
+├── requirements.txt    # Dependensi Python (flask>=3.0)
 │
-├── backend/
-│   ├── main.py                   # FastAPI app + endpoint /solve
-│   ├── knapsack.py               # Implementasi algoritma DP
-│   └── test_knapsack.py          # Unit test algoritma
+├── index.html          # Struktur halaman (sidebar | area simulasi | panel)
+├── app.js              # Logika UI: state, render, panggil /solve via fetch
+├── style.css           # Styling, tema (CSS variables), animasi
+├── knapsack.js         # (referensi versi lama; TIDAK dimuat lagi)
 │
-├── public/
-│   ├── fonts/                    # Font Google Sans (lokal)
-│   └── items/                    # Gambar ikon barang (PNG)
-│       ├── tas.png
-│       ├── laptop.png
-│       ├── buku.png
-│       ├── charger.png
-│       ├── botol.png
-│       ├── pensil.png
-│       ├── powerbank.png
-│       └── jaket.png
+├── fonts/              # Google Sans (woff2): Regular, Medium, Bold, Italic
+│   ├── GoogleSans-Regular.woff2
+│   ├── GoogleSans-Medium.woff2
+│   ├── GoogleSans-Bold.woff2
+│   ├── GoogleSans-Italic.woff2
+│   └── GoogleSans-MediumItalic.woff2
 │
-├── package.json                  # Dependensi & skrip Node.js
-├── tsconfig.json                 # Konfigurasi TypeScript
-├── next.config.ts                # Konfigurasi Next.js
-├── postcss.config.mjs            # Konfigurasi PostCSS/Tailwind
-├── .env.example                  # Template environment variables
-├── CLAUDE.md                     # Instruksi untuk AI Claude
-├── AGENTS.md                     # Catatan khusus Next.js versi ini
-└── penjelasan.md                 # File ini
+└── items/              # Gambar ikon barang (PNG)
+    ├── tas.png         # logo aplikasi
+    ├── laptop.png
+    ├── buku.png
+    ├── charger.png
+    ├── botol-minum.png
+    ├── kotak-pensil.png
+    ├── powerbank.png
+    └── jaket.png
 ```
+
+> **Catatan tentang `knapsack.js`:** pada versi sebelumnya, algoritma dihitung
+> langsung di browser memakai file ini. Sekarang algoritma sudah dipindah ke
+> server (`knapsack.py`), dan `index.html` **tidak lagi memuat** `knapsack.js`.
+> File-nya disisakan hanya sebagai bahan referensi/perbandingan.
 
 ---
 
@@ -140,403 +118,311 @@ Aplikasi menggunakan alur wizard **3 langkah**:
 [Langkah 0: Mulai] → [Langkah 1: Evaluasi Barang] → [Langkah 2: Hasil Optimal]
 ```
 
-### Langkah 0 — Mulai (`page.tsx`)
+### Langkah 0 — Mulai
 
 - Pengguna melihat tampilan awal dengan tas kosong di area simulasi
 - Di sidebar kiri, pengguna mengatur:
   - **Kapasitas tas** (dalam kg)
   - **Daftar barang** yang akan dimasukkan
-- Pengguna dapat menambah barang dari preset atau mengisi manual
-- Setelah siap, klik **"Mulai Proses"** untuk mengirim data ke backend
+- Pengguna dapat menambah barang dari preset atau mengisi manual (custom)
+- Setelah siap, klik **"Mulai"** → `app.js` mengirim data ke server Flask
 
 ### Langkah 1 — Evaluasi Barang
 
-- Data dikirim ke backend via POST request
-- Backend menghitung tabel DP dan item yang dipilih
+- Data dikirim ke server via `fetch('/solve')` (POST)
+- Server (`knapsack.py`) menghitung tabel DP dan barang yang dipilih, lalu
+  mengembalikan JSON
 - Frontend menampilkan:
-  - **SimulationArea**: visual barang yang sedang dievaluasi
-  - **DPTable**: tabel DP yang bisa dinavigasi sel per sel
+  - **Area simulasi**: visual barang yang sedang dievaluasi + indikator kapasitas
+  - **Matriks DP**: tabel DP yang bisa dinavigasi sel per sel
 - Pengguna dapat melangkah manual (tombol "Next") atau play otomatis
 
 ### Langkah 2 — Hasil Optimal
 
 - Setelah simulasi selesai, tampil hasil akhir:
-  - **SimulationArea**: visual barang-barang yang terpilih di dalam tas
-  - **SelectedPanel**: daftar barang terpilih + total berat & nilai
+  - **Area simulasi**: visual barang-barang yang terpilih di dalam tas
+  - **Panel kanan**: daftar barang terpilih + total berat & nilai
 
 ---
 
-## 6. Komponen Frontend
+## 6. Frontend (HTML/CSS/JS)
 
-### `src/app/page.tsx` — Halaman Utama
+### `index.html` — Struktur Halaman
 
-File terpenting di frontend. Bertanggung jawab atas:
+Layout 3 kolom dalam satu container `.app`:
 
-- **State management** global: daftar item, kapasitas, hasil solve, step saat ini, index simulasi
-- Memanggil API `solveKnapsack` saat pengguna mulai proses
-- Meneruskan data ke komponen anak via props
-- Merender layout 3 kolom: Sidebar | Area Tengah | SelectedPanel
+- **`<aside class="sidebar">`** (kiri) — input kapasitas, kelola barang, tabel barang, statistik
+- **`<main class="main">`** (tengah) — stepper, area simulasi, kontrol, kartu matriks DP
+- **`<aside class="selected-panel">`** (kanan) — barang terpilih
 
-State utama:
-```typescript
-items: Item[]                    // Daftar barang
-capacity: number                 // Kapasitas tas (kg)
-solveResult: SolveResponse | null // Hasil dari backend
-currentStep: number              // Langkah wizard (0, 1, 2)
-currentSimIndex: number          // Index langkah simulasi DP
+Di bagian bawah hanya memuat satu skrip:
+
+```html
+<script src="app.js"></script>
 ```
 
----
+### `app.js` — Logika UI
 
-### `src/components/Sidebar.tsx` — Panel Kiri
+Seluruh perilaku aplikasi ada di sini. Bagian-bagian utamanya:
 
-Lebar **340px**, berisi:
+**Konstanta**
 
-- **Input kapasitas** tas (angka, dalam kg)
-- **Dropdown preset** 8 jenis barang:
-  - Laptop (3 kg, 10 poin)
-  - Buku (2 kg, 8 poin)
-  - Charger (1 kg, 7 poin)
-  - Botol Minum (1 kg, 5 poin)
-  - Kotak Pensil (1 kg, 6 poin)
-  - Powerbank (1 kg, 8 poin)
-  - Jaket (2 kg, 7 poin)
-  - Custom (isi manual)
-- **Tombol tambah** barang dan **randomisasi** barang acak
-- **Tabel barang** dengan mode edit inline (nama, berat, nilai)
-- **Statistik ringkas**: jumlah barang, total berat, total nilai
-- **Tombol "Mulai Proses"** (aktif jika ada minimal 1 barang)
+- `ICONS` & `icon()` — kumpulan path SVG inline (gaya Lucide) dan helper render-nya
+- `PRESETS` — 7 preset barang + Custom:
 
----
+  | Barang | Berat | Nilai |
+  |---|---|---|
+  | Laptop | 3 kg | 10 |
+  | Buku | 2 kg | 8 |
+  | Charger | 1 kg | 7 |
+  | Botol Minum | 1 kg | 5 |
+  | Kotak Pensil | 1 kg | 6 |
+  | Powerbank | 1 kg | 8 |
+  | Jaket | 2 kg | 7 |
 
-### `src/components/SimulationArea.tsx` — Area Simulasi
+- `IMAGE_MAP` — pemetaan nama barang → file gambar di `items/`
+- `STEPS = ["Mulai", "Evaluasi Barang", "Hasil Optimal"]`
+- Utilitas: `uid()` (ID unik lintas-browser), `escapeHtml()`, `itemIcon()`
 
-Area tengah yang berubah sesuai langkah:
+**State global (`state`)**
 
-- **Langkah 0**: Menampilkan ilustrasi tas kosong
-- **Langkah 1**: Menampilkan barang yang sedang dievaluasi algoritma beserta indikator kapasitas terpakai
-- **Langkah 2**: Menampilkan animasi/visual barang-barang yang masuk ke dalam tas sebagai hasil optimal
-
----
-
-### `src/components/DPTable.tsx` — Tabel Dynamic Programming
-
-Komponen paling teknis. Menampilkan tabel DP berukuran `(n+1) × (kapasitas+1)`:
-
-- **Navigasi sel**: tombol "Next" untuk maju satu langkah
-- **Auto Play**: otomatis melanjutkan dengan interval waktu
-- **Reset**: kembali ke awal
-- **Warna sel**:
-  - **Hijau**: sel yang sedang aktif diproses
-  - **Biru**: jalur optimal (backtracking)
-  - **Putih/Abu**: sel yang sudah selesai
-- Memancarkan event `onStepChange` ke parent untuk sinkronisasi dengan `SimulationArea`
-
----
-
-### `src/components/SelectedPanel.tsx` — Panel Kanan
-
-Lebar **280px**, menampilkan:
-
-- Daftar barang yang dipilih oleh algoritma (dengan ikon)
-- Total berat dan total nilai optimal
-- Jumlah barang terpilih
-- **Empty state** saat simulasi belum selesai
-
----
-
-### `src/components/Stepper.tsx` — Indikator Langkah
-
-Komponen navigasi visual di bagian atas, menampilkan 3 langkah:
-
-1. **Mulai** — Pengaturan awal
-2. **Evaluasi Barang** — Proses algoritma
-3. **Hasil Optimal** — Tampil hasil
-
-Langkah selesai ditandai ikon centang (✓), langkah aktif ditandai titik.
-
----
-
-### `src/components/ItemIcon.tsx` — Ikon Barang
-
-Memetakan nama preset ke file gambar PNG di `/public/items/`:
-
-```
-"Laptop"       → /items/laptop.png
-"Buku"         → /items/buku.png
-"Charger"      → /items/charger.png
-"Botol Minum"  → /items/botol.png
-"Kotak Pensil" → /items/pensil.png
-"Powerbank"    → /items/powerbank.png
-"Jaket"        → /items/jaket.png
+```javascript
+items          // Daftar barang { id, name, weight, value }
+capacity       // Kapasitas tas (kg)
+result         // Hasil dari server (dp_table, selected_items, ...)
+currentStep    // Langkah wizard (0, 1, 2)
+currentEvalItem, dpProgress   // Posisi evaluasi & progress kapasitas
+dpStep, dpPlaying, dpInterval // Sub-state navigasi tabel DP
+selectedPreset, editingId     // State form sidebar
+simView, dpSig, dpPrevStep    // Pelacak render incremental untuk animasi mulus
 ```
 
-Untuk barang custom atau tidak dikenal, menampilkan ikon `Package` dari Lucide React.
+**Fungsi penting**
 
----
+- `initSidebar()`, `renderPresetArea()` — isi dropdown preset & form custom
+- `handleAdd()`, `handleRandom()` — tambah barang (manual/preset/acak)
+- `handleStart()` — **async**; kirim `POST /solve` ke Flask, simpan hasil ke `state.result`, lalu mulai animasi (lihat bagian 9)
+- `handlePrev()` / `handleNext()` — navigasi langkah wizard
+- `handleDPStepChange()` — sinkronisasi posisi sel DP dengan area simulasi
+- `renderMain()` & fungsi render tabel DP — menggambar ulang UI; memakai update DOM incremental agar animasi tidak "loncat"
 
-### `src/components/ui/` — Komponen UI Dasar
+### `style.css` — Styling & Animasi
 
-#### `button.tsx`
-Tombol dengan 4 varian:
-- `primary` — biru solid (aksi utama)
-- `outline` — border biru, background transparan
-- `ghost` — tanpa border/background
-- `destructive` — merah, untuk hapus
-
-#### `input.tsx`
-Input teks dengan prop `suffix` opsional (contoh: tampilkan "kg" di kanan input).
-
-#### `card.tsx`
-Wrapper dengan padding dan shadow ringan, dipakai sebagai kontainer section.
-
-#### `Select.tsx`
-Dropdown select berbasis HTML `<select>` dengan styling Tailwind.
+- `@font-face` untuk Google Sans (woff2 lokal)
+- Tema lewat CSS variables (lihat bagian 10)
+- Sistem animasi (capacity bar, pulsing dot evaluasi, transisi sel DP) dengan dukungan `@media (prefers-reduced-motion: reduce)` untuk aksesibilitas
 
 ---
 
 ## 7. Backend & Algoritma
 
-### `backend/main.py` — FastAPI Server
+### `app.py` — Server Flask
+
+Server menyajikan **dua hal sekaligus** dari folder yang sama:
 
 ```python
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from flask import Flask, request, jsonify, send_from_directory
+from knapsack import solve_knapsack
 
-app = FastAPI()
-app.add_middleware(CORSMiddleware, allow_origins=["*"], ...)
+app = Flask(__name__, static_folder="", static_url_path="")
 
-@app.post("/solve")
-def solve(request: SolveRequest) -> SolveResponse:
-    ...
+@app.route("/")
+def index():
+    return send_from_directory(".", "index.html")
+
+@app.route("/solve", methods=["POST"])
+def solve():
+    data = request.get_json(silent=True) or {}
+    capacity = int(data.get("capacity", 0))
+    items = data.get("items", [])
+    return jsonify(solve_knapsack(items, capacity))
+
+if __name__ == "__main__":
+    app.run(host="127.0.0.1", port=5000, debug=True)
 ```
 
-Satu-satunya endpoint: `POST /solve`
+1. **File statis** (`index.html`, `app.js`, `style.css`, `fonts/`, `items/`) disajikan langsung dari root URL.
+2. **Endpoint `POST /solve`** menjalankan algoritma dan membalas JSON.
 
-### `backend/knapsack.py` — Algoritma Inti
+Karena frontend dan API berada di **origin yang sama**, tidak diperlukan konfigurasi CORS.
 
-Implementasi **0/1 Knapsack dengan Dynamic Programming**:
+### `knapsack.py` — Algoritma Inti
 
-#### Fase 1: Membangun Tabel DP
+Implementasi **0/1 Knapsack dengan Dynamic Programming**.
+
+#### Fase 1 — Membangun Tabel DP
 
 ```python
-# Inisialisasi tabel berukuran (n+1) x (capacity+1) dengan 0
+# Tabel berukuran (n+1) x (capacity+1), diinisialisasi 0
 dp = [[0] * (capacity + 1) for _ in range(n + 1)]
 
 for i in range(1, n + 1):
-    weight = items[i-1].weight
-    value  = items[i-1].value
-    for j in range(capacity + 1):
-        if weight <= j:
-            # Pilih nilai maksimum: ambil atau tidak ambil barang ke-i
-            dp[i][j] = max(dp[i-1][j], dp[i-1][j-weight] + value)
+    berat = items[i - 1]["weight"]
+    nilai = items[i - 1]["value"]
+    for w in range(capacity + 1):
+        if berat <= w:
+            # Pilih maksimum: TIDAK ambil vs AMBIL barang ke-i
+            dp[i][w] = max(dp[i - 1][w], nilai + dp[i - 1][w - berat])
         else:
-            # Barang terlalu berat, tidak bisa diambil
-            dp[i][j] = dp[i-1][j]
+            # Barang tidak muat -> warisi nilai dari baris atas
+            dp[i][w] = dp[i - 1][w]
 ```
 
-- **`dp[i][j]`** = nilai optimal menggunakan `i` barang pertama dengan kapasitas `j`
+- **`dp[i][w]`** = nilai optimal memakai `i` barang pertama dengan kapasitas `w`
 - Setiap barang hanya bisa diambil **0 atau 1 kali** (0/1 Knapsack)
 
-#### Fase 2: Backtracking untuk Menemukan Barang Terpilih
+#### Fase 2 — Backtracking (menentukan barang terpilih)
 
 ```python
 selected = []
-j = capacity
+w = capacity
 for i in range(n, 0, -1):
-    if dp[i][j] != dp[i-1][j]:
-        selected.append(items[i-1])
-        j -= items[i-1].weight
+    if dp[i][w] != dp[i - 1][w]:   # nilai berubah -> barang ke-i diambil
+        selected.append(items[i - 1])
+        w -= items[i - 1]["weight"]
+selected.reverse()
 ```
 
-Melacak mundur dari `dp[n][capacity]` untuk menentukan barang mana saja yang dipilih.
+Melacak mundur dari `dp[n][capacity]` untuk menentukan barang mana saja yang dipilih, lalu mengembalikan hasil (lihat bagian 8).
 
-#### Response yang dikembalikan:
+---
 
-```python
+## 8. Format Data (Request & Response)
+
+### Request — `POST /solve`
+
+```json
 {
-  "dp_table":      [[...], [...], ...],  # Seluruh tabel DP
-  "selected_items": [...],               # Barang-barang terpilih
-  "total_weight":  int,
-  "total_value":   int
+  "capacity": 7,
+  "items": [
+    { "name": "Laptop", "weight": 3, "value": 10 },
+    { "name": "Buku",   "weight": 2, "value": 8  }
+  ]
 }
 ```
 
-### `backend/test_knapsack.py` — Unit Test
+### Response
 
-Berisi test case untuk memvalidasi kebenaran algoritma, mencakup:
-- Kasus normal (beberapa barang, kapasitas terbatas)
-- Kasus edge (tas kosong, tidak ada barang yang muat)
+```json
+{
+  "dp_table": [[0, 0, "..."], ["..."]],
+  "selected_items": [
+    { "name": "Laptop", "weight": 3, "value": 10 }
+  ],
+  "total_weight": 3,
+  "total_value": 10
+}
+```
+
+| Field | Tipe | Keterangan |
+|---|---|---|
+| `dp_table` | `int[][]` | Seluruh tabel DP (untuk visualisasi) |
+| `selected_items` | objek `{name, weight, value}[]` | Barang yang dipilih algoritma |
+| `total_weight` | `int` | Total berat barang terpilih |
+| `total_value` | `int` | Total nilai optimal (`dp[n][capacity]`) |
+
+Format ini **identik** dengan versi lama, sehingga seluruh logika animasi di `app.js` tetap berfungsi.
 
 ---
 
-## 8. Tipe Data & Interface
+## 9. Integrasi Frontend ↔ Backend
 
-Semua type definitions ada di `src/types/index.ts`:
+Inti integrasi ada di `handleStart()` dalam `app.js`:
 
-### `Item`
-
-```typescript
-interface Item {
-  id: string       // UUID unik setiap barang
-  name: string     // Nama barang
-  weight: number   // Berat dalam kg
-  value: number    // Nilai/utilitas barang (poin)
-  image?: string   // Opsional: path gambar
+```javascript
+async function handleStart() {
+  if (state.items.length === 0 || state.capacity <= 0) return;
+  state.error = "";
+  state.currentStep = 1;
+  state.dpStep = 0;
+  try {
+    const res = await fetch("/solve", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        capacity: state.capacity,
+        items: state.items.map(({ name, weight, value }) => ({ name, weight, value })),
+      }),
+    });
+    if (!res.ok) throw new Error("Server membalas status " + res.status);
+    state.result = await res.json();
+  } catch (err) {
+    state.error = "Gagal menghubungi server: " + err.message;
+    renderMain();
+    return;
+  }
+  handleDPStepChange(0, state.items.length * (state.capacity + 1));
+  renderMain();
 }
 ```
 
-### `SolveRequest`
-
-```typescript
-interface SolveRequest {
-  capacity: number
-  items: {
-    name: string
-    weight: number
-    value: number
-  }[]
-}
-```
-
-### `SolveResponse`
-
-```typescript
-interface SolveResponse {
-  dp_table: number[][]           // Matriks DP lengkap
-  selected_items: {
-    name: string
-    weight: number
-    value: number
-  }[]
-  total_weight: number
-  total_value: number
-}
-```
-
----
-
-## 9. Integrasi API
-
-### `src/lib/api.ts`
-
-```typescript
-const BASE_URL = "https://knapsack-web-wix4.vercel.app"
-
-export async function solveKnapsack(request: SolveRequest): Promise<SolveResponse> {
-  const response = await fetch(`${BASE_URL}/solve`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(request),
-  })
-  return response.json()
-}
-```
-
-- Backend berjalan di Vercel (Python/FastAPI)
-- Frontend memanggil satu endpoint: `POST /solve`
-- Tidak ada autentikasi (public API)
-
-### `src/lib/utils.ts`
-
-```typescript
-import { clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
-}
-```
-
-Helper `cn()` dipakai di seluruh komponen untuk menggabungkan class Tailwind secara kondisional tanpa konflik.
+- Memakai URL **relatif** `/solve` karena halaman & API satu origin (Flask).
+- Penanganan error: jika server tidak terjangkau / membalas status non-OK, pesan ditampilkan di UI.
+- Setelah `state.result` terisi, animasi langkah demi langkah dimulai.
 
 ---
 
 ## 10. Tampilan & Styling
 
-### `src/app/globals.css` — CSS Variables & Tema
+### Tema (CSS Variables di `style.css`)
 
 ```css
 :root {
-  --color-primary:     #2563eb;  /* Biru utama */
-  --color-background:  #f5f7fa;  /* Abu-biru terang */
-  --color-foreground:  #1a1a2e;  /* Teks gelap */
-  --color-success:     #22c55e;  /* Hijau (konfirmasi) */
-  --color-destructive: #ef4444;  /* Merah (hapus/error) */
-  --color-muted:       #6b7280;  /* Abu (teks sekunder) */
-  --color-border:      #e5e7eb;  /* Border terang */
+  --background:  #f5f7fa;  /* Abu-biru terang */
+  --foreground:  #1a1a2e;  /* Teks gelap */
+  --card:        #ffffff;  /* Latar kartu */
+  --primary:     #2563eb;  /* Biru utama */
+  --primary-fg:  #ffffff;  /* Teks di atas primary */
+  --muted:       #6b7280;  /* Teks sekunder */
+  --border:      #e5e7eb;  /* Border terang */
+  --destructive: #ef4444;  /* Merah (hapus/error) */
+  --success:     #22c55e;  /* Hijau (konfirmasi) */
 }
 ```
 
 ### Font
 
-- **Google Sans** (di-host lokal di `/public/fonts/`)
-- Dipakai sebagai font default seluruh aplikasi
-- Di-set di `src/app/layout.tsx`
+- **Google Sans** di-host lokal di `fonts/` (Regular, Medium, Bold, + Italic) untuk menghindari ketergantungan pada Google Fonts CDN.
 
 ### Layout Keseluruhan
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                      Header / Stepper                       │
+│                          Stepper                            │
 ├──────────────┬──────────────────────────────┬───────────────┤
 │              │                              │               │
-│  Sidebar     │     SimulationArea           │ SelectedPanel │
-│  (340px)     │     + DPTable                │ (280px)       │
+│  Sidebar     │     Area Simulasi            │ Barang        │
+│  (kelola     │     + Matriks DP             │ Terpilih      │
+│   barang)    │                              │ (panel kanan) │
 │              │                              │               │
 └──────────────┴──────────────────────────────┴───────────────┘
 ```
 
 ---
 
-## 11. Konfigurasi Project
+## 11. Cara Menjalankan
 
-### `package.json`
+```bash
+# 1. Pasang dependensi Python
+pip install -r requirements.txt
 
-```json
-{
-  "name": "knapsack",
-  "scripts": {
-    "dev":   "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint":  "next lint"
-  }
-}
+# 2. Jalankan server Flask
+python app.py
 ```
 
-### `tsconfig.json`
+Lalu buka **http://127.0.0.1:5000** di browser.
 
-- Target: **ES2017**
-- Path alias `@/*` → `./src/*` (misal: `import { cn } from "@/lib/utils"`)
-- Strict mode aktif
-- JSX mode: `preserve` (Next.js menangani transform)
-
-### `next.config.ts`
-
-Konfigurasi minimal, siap untuk dikembangkan (CORS, image domain, dll.).
-
-### `postcss.config.mjs`
-
-```js
-export default { plugins: { "@tailwindcss/postcss": {} } }
-```
-
-Menggunakan plugin Tailwind CSS v4 berbasis PostCSS.
-
-### `.env.example`
-
-Template environment variables. Salin ke `.env.local` dan isi nilai yang diperlukan sebelum menjalankan aplikasi secara lokal.
+Karena Flask menyajikan file statis sekaligus API, **cukup satu perintah dan satu URL** — tidak perlu menjalankan server frontend terpisah.
 
 ---
 
-## 12. Aset Publik
+## 12. Aset
 
-### `/public/fonts/`
+### `fonts/`
 
-Font **Google Sans** tersedia dalam beberapa weight (Regular, Medium, Bold, dll.) untuk menghindari ketergantungan pada Google Fonts CDN.
+Font **Google Sans** dalam beberapa weight (Regular, Medium, Bold) + varian italic, untuk tampilan konsisten tanpa CDN.
 
-### `/public/items/`
+### `items/`
 
 Gambar ikon PNG untuk setiap preset barang:
 
@@ -546,23 +432,25 @@ Gambar ikon PNG untuk setiap preset barang:
 | `laptop.png` | Laptop |
 | `buku.png` | Buku |
 | `charger.png` | Charger |
-| `botol.png` | Botol Minum |
-| `pensil.png` | Kotak Pensil |
+| `botol-minum.png` | Botol Minum |
+| `kotak-pensil.png` | Kotak Pensil |
 | `powerbank.png` | Powerbank |
 | `jaket.png` | Jaket |
 
+Untuk barang custom/tidak dikenal, ditampilkan ikon `package` (SVG inline).
+
 ---
 
-## Ringkasan Singkat
+## 13. Ringkasan Singkat
 
 | Aspek | Detail |
 |---|---|
 | **Jenis Aplikasi** | Web app edukasi interaktif |
 | **Masalah yang Diselesaikan** | 0/1 Knapsack Problem |
-| **Algoritma** | Dynamic Programming |
-| **Bahasa Frontend** | TypeScript (Next.js + React) |
-| **Bahasa Backend** | Python (FastAPI) |
-| **Styling** | Tailwind CSS v4 |
-| **Deployment** | Vercel (backend) |
+| **Algoritma** | Dynamic Programming (di server) |
+| **Frontend** | HTML/CSS/JavaScript polos (tanpa framework) |
+| **Backend** | Python (Flask) — sajikan statis + `POST /solve` |
+| **Komunikasi** | `fetch('/solve')`, satu origin (tanpa CORS) |
+| **Cara Jalan** | `python app.py` → buka `http://127.0.0.1:5000` |
 | **Bahasa Antarmuka** | Bahasa Indonesia |
 | **Target Pengguna** | Mahasiswa / pelajar yang belajar algoritma |
