@@ -5,7 +5,7 @@ https://knapsack.parriz.in
 <img width="720" alt="Screenshot 2026-06-07 134425" src="https://github.com/user-attachments/assets/1d387a23-65f4-478e-941d-b7c97bda2fd1" />
 <br><br/>
 
-Dashboard interaktif untuk memvisualisasikan algoritma **Dynamic Programming** pada permasalahan **0/1 Knapsack**. Tampilan dibuat dengan **HTML/CSS/JavaScript polos** (tanpa framework), sedangkan algoritmanya berjalan di server **Flask (Python)**.
+Dashboard interaktif untuk memvisualisasikan algoritma **Dynamic Programming** pada permasalahan **0/1 Knapsack**. Tampilan dibuat dengan **HTML/CSS/JavaScript polos** (tanpa framework), sedangkan algoritmanya berjalan di server **Flask (Python)**. Dibuat bersama dengan anggota kelompok 6, sebagai tugas akhir Desain dan Analisis Algoritma
 
 ## Tech Stack
 
