@@ -94,3 +94,11 @@ lalu memakai `dp_table` & `selected_items` untuk animasi langkah demi langkah.
 
 Letakkan file gambar di `items/` dengan format nama `nama-barang.png`. Mapping nama
 ke file ada di konstanta `IMAGE_MAP` pada `app.js`.
+
+## Dukungan AI
+Pengerjaan aplikasi ini sangat terbantu oleh kolaborasi dengan model bahasa besar (Large Language Models) dari Anthropic:
+
+- Claude Sonnet 4.6
+- Claude Opus 4.8
+
+Model-model AI ini digunakan untuk membantu dalam proses debugging, perbaikan kode, penambahan fitur, dan perancangan struktur aplikasi.
