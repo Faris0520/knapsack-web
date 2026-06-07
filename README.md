@@ -4,9 +4,9 @@ Dashboard interaktif untuk memvisualisasikan algoritma **Dynamic Programming** p
 
 ## Tech Stack
 
-- **HTML5 / CSS3 / JavaScript (vanilla)** — antarmuka, tanpa build step
-- **Flask (Python)** — menyajikan halaman + endpoint `POST /solve`
-- **Algoritma Dynamic Programming** — 0/1 Knapsack di `knapsack.py`
+- **HTML5 / CSS3 / JavaScript (vanilla)** - antarmuka, tanpa build step
+- **Flask (Python)** - menyajikan halaman + endpoint `POST /solve`
+- **Algoritma Dynamic Programming** - 0/1 Knapsack di `knapsack.py`
 - **Google Sans** (font lokal) + ikon SVG inline gaya Lucide
 
 ## Fitur
@@ -43,7 +43,7 @@ knapsack/
 ```
 
 > Catatan: `knapsack.js` masih ada sebagai referensi versi lama (algoritma di
-> browser), tetapi **tidak lagi dimuat** — algoritma kini di `knapsack.py`.
+> browser), tetapi **tidak lagi dimuat** - algoritma kini di `knapsack.py`.
 
 ## Cara Menjalankan
 
@@ -52,7 +52,7 @@ pip install -r requirements.txt
 python app.py
 ```
 
-Lalu buka **http://127.0.0.1:5000** — satu perintah, satu URL. Flask menyajikan
+Lalu buka **http://127.0.0.1:5000** - satu perintah, satu URL. Flask menyajikan
 file statis sekaligus melayani API, jadi tidak perlu server terpisah.
 
 ## API
